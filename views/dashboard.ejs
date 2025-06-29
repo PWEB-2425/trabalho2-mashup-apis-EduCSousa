@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Bem-vindo</h1>
+      <div class="welcome-message"><%= user.username %></div>
+
+      <form action="/api/search" method="POST">
+        <div class="form-group">
+          <label for="term">Pesquisar termo...</label>
+          <input type="text" id="term" name="term" required>
+        </div>
+        <button type="submit">Pesquisar</button>
+      </form>
+
+      <% if (results) { %>
+        <div class="search-results">
+          <h2>Resultados</h2>
+          <p><strong>Temperatura:</strong> <%= results.weather.main.temp %> °C</p>
+          <p class="weather-description"><%= results.weather.weather[0].description %></p>
+          <div class="wiki-summary">
+            <h3>Informações</h3>
+            <p><%= results.wikipedia.extract %></p>
+          </div>
+        </div>
+      <% } %>
+
+      <h2>Histórico de pesquisas</h2>
+      <ul class="search-history">
+        <% if (history && history.length > 0) { %>
+          <% history.forEach(s => { %>
+            <li>
+              <span><%= s.term %></span>
+              <span class="date"><%= s.timestamp.toLocaleString() %></span>
+            </li>
+          <% }) %>
+        <% } else { %>
+          <li>Sem histórico de pesquisas</li>
+        <% } %>
+      </ul>
+
+      <a href="/logout" class="btn logout-btn">Sair</a>
+    </div>
+  </div>
+</body>
+</html>
